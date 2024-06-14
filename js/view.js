@@ -1,11 +1,29 @@
 import { numberWithCommas } from "./utils.js";
+import { Channel, PlaylistItem } from "./youtube/models.js";
 
+/**
+ * @returns {string} 
+ */
 export function readHandle() {
-    return document.getElementById('channel-input').value
+    const channelInput = document.getElementById('channel-input')
+
+    if (!channelInput || !(channelInput instanceof HTMLInputElement)) {
+        throw new Error("Missing channel-input object or is not an input tag");
+    }
+
+    return channelInput.value
 }
 
+/**
+ * @param {PlaylistItem[]} videos 
+*/
 export function showVideos(videos) {
     const videoContainer = document.getElementById('video-container')
+
+    if (!videoContainer) {
+        throw new Error("Missing video-container object");
+    }
+
     if (!videos.length) {
         videoContainer.innerHTML = 'No Uploaded Videos';
         return
@@ -25,6 +43,9 @@ export function showVideos(videos) {
     videoContainer.innerHTML = output;
 }
 
+/**
+ * @param {Channel} channel 
+ */
 export function showChannelData(channel) {
     const statistics = channel.statistics
     const description = channel.snippet.description
@@ -40,6 +61,11 @@ export function showChannelData(channel) {
         <a href="https://youtube.com/${channel.snippet.customUrl}" class="btn grey darken-2">Visit Channel</a>
         `
     const channelData = document.getElementById('channel-data');
+
+    if (!channelData) {
+        throw new Error("Missing channel-data object");
+    }
+
     channelData.innerHTML = output;
     channelData.style.display = 'block'
 }

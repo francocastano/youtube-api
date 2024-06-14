@@ -1,7 +1,9 @@
 import { showVideos, showChannelData, readHandle } from "./view.js";
-import { getVideosByPlaylistId, getChannelInformationByHandle, getUploadsPlaylistIdByChannel } from "./youtube.js"
+import { getVideosByPlaylistId, getChannelInformationByHandle, getUploadsPlaylistIdByChannel } from "./youtube/youtube.js"
 
-
+/**
+ * @param {SubmitEvent} event 
+ */
 async function processHandle(event) {
     event.preventDefault()
     const handle = readHandle()
@@ -12,7 +14,14 @@ async function processHandle(event) {
     showVideos(videos)
 }
 
-const startUp = () =>  document.getElementById('channel-form')
-                               .addEventListener('submit', processHandle);
+const startUp = () =>  {
+    const channelForm = document.getElementById('channel-form')
+
+    if (!channelForm){
+        throw new Error("An element with id channel-form must be defined")
+    }
+    
+    channelForm.addEventListener('submit', processHandle);
+}
 
 window.onload = startUp
